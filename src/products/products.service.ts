@@ -112,4 +112,27 @@ export class ProductsService {
   findOne(id: number) {
     return this.products.find((p) => p.id === id);
   }
+
+  // --- Nou: search ---
+  search(filters: { name?: string; minPrice?: number; maxPrice?: number }) {
+    return this.products.filter((product) => {
+      let matches = true;
+
+      if (filters.name) {
+        matches =
+          matches &&
+          product.name.toLowerCase().includes(filters.name.toLowerCase());
+      }
+
+      if (filters.minPrice !== undefined) {
+        matches = matches && product.price >= filters.minPrice;
+      }
+
+      if (filters.maxPrice !== undefined) {
+        matches = matches && product.price <= filters.maxPrice;
+      }
+
+      return matches;
+    });
+  }
 }
